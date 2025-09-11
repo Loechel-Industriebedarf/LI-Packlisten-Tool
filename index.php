@@ -3,67 +3,67 @@
 ?>
 
  <main>
-      <section class="py-5 text-center container">
-        <div class="row py-lg-5">
+      <section class="py-2 text-center container">
+        <div class="row py-lg-1">
           <div class="col-lg-6 col-md-8 mx-auto">
             <p class="lead text-body-secondary">
-              ToDo: Auftragsstatus / (Positionsstatus)<br>
-			  ToDo: Packliste "sperren"???<br>
-			  ToDo: Farben für Prime/Prio etc.
+			  ToDo: Maybe direkte DHL Anbindung? + Lieferschein Job<br>
+			  ToDo: Maybe presets bzw. Einstellungsmöglichkeiten<br>
+			  ToDo: Möglichkeit EANs in der Packliste zu scannen
             </p>
 			  <form class="form-inline" action="index.php" method="GET">
 				<div class="input-group">
-				  <div class="input-group-prepend">
+				  <input class="form-control mr-sm-2" type="search" placeholder="Suche..." <?php if(isset($_GET["s"])){ echo 'value="'.$_GET["s"].'"'; } ?> "aria-label="Search" name="s">
+				  <div class="input-group-append">
 				    <button type="submit" class="btn btn-outline-secondary">🔍</button>
 				  </div>
-				  <input class="form-control mr-sm-2" type="search" placeholder="Suche..." <?php if(isset($_GET["s"])){ echo 'value="'.$_GET["s"].'"'; } ?> "aria-label="Search" name="s">
 				</div>
 			 </form>
           </div>
         </div>
       </section>
 	  
-	  
+
 	  
       <div class="album py-5 bg-body-tertiary">
+<?php
+	$searchString = "";
+		if(isset($_GET["s"])){
+			$s = $_GET["s"];
+			echo '<div class="alert alert-info" role="alert">Suche nach "' . $s . '"...</div>';
+			if(is_numeric($s)){
+				$searchString = "WHERE " . "PACKLISTENNR = '" . $s . "' OR dbo.Auftragskopf.BELEGNR = '" . $s . "' OR BESTELLUNG LIKE '%". $s . "%'";
+			}
+			else{
+				$searchString = "WHERE " . 
+				"LFIRMA1 LIKE '%" . $s . "%' OR LFIRMA2 LIKE '%" . $s . "%' OR RFIRMA1 LIKE '%" . $s . "%' OR RFIRMA2 LIKE '%" . $s . "%' ";
+			}
+		}
+		else{
+			$searchString = "WHERE [PACKLISTENNR] is not null and dbo.auftragspos.STATUS = 2 and (BO3_DELIVERYMEMO is null or AENDERUNGSDATUM < DATEADD(hour, -1, GETDATE())) ";
+		}
+?>	  
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 		  
 <?php
-
-		$searchString = "";
-		if(isset($_GET["s"])){
-			$s = $_GET["s"];
-			echo 'Suche nach "' . $s . '"';
-			if(is_numeric($s)){
-				$searchString = "AND ( " . "PACKLISTENNR = '" . $s . "' OR dbo.Auftragskopf.BELEGNR = '" . $s . "' OR BESTELLUNG LIKE '%". $s . "%'" . 
-				" )";
-			}
-			else{
-				$searchString = "AND ( " . 
-				"LFIRMA1 LIKE '%" . $s . "%' OR LFIRMA2 LIKE '%" . $s . "%' OR RFIRMA1 LIKE '%" . $s . "%' OR RFIRMA2 LIKE '%" . $s . "%' " .
-				" ) ";
-			}
-		}
-		
-		$count = 12;
+		$count = 120;
 	
 		// SQL-Abfrage
-		$sql = "SELECT TOP (" . $count . ") [PACKLISTENNR], COUNT([ARTIKELNR]) as POSITIONEN, min(dbo.auftragskopf.belegart) as BELEGART, min(dbo.auftragskopf.VANUMMER) as VERSANDNR, min(dbo.auftragskopf.BELEGNR) as AUFTRAGSNR, min(dbo.auftragskopf.ERFASSUNGSDATUM) as ERFDATE, min(dbo.auftragskopf.AENDERUNGSDATUM) as AENDATE, VATEXT, AUFTRAGSART, sum(CASE WHEN NetWeightPerSalesUnit is null THEN 3*MENGE_BESTELLT ELSE NetWeightPerSalesUnit*MENGE_BESTELLT END) as WEIGHT, COUNT(*) OVER() AS GESAMTANZAHL 
+		$sql = "SELECT TOP (" . $count . ") [PACKLISTENNR], COUNT([ARTIKELNR]) as POSITIONEN, min(dbo.auftragskopf.belegart) as BELEGART, min(dbo.auftragskopf.VANUMMER) as VERSANDNR, min(dbo.auftragskopf.BELEGNR) as AUFTRAGSNR, min(dbo.auftragskopf.ERFASSUNGSDATUM) as ERFDATE, min(dbo.auftragskopf.AENDERUNGSDATUM) as AENDATE, VATEXT, AUFTRAGSART, sum(CASE WHEN NetWeightPerSalesUnit is null THEN 3*MENGE_BESTELLT ELSE NetWeightPerSalesUnit*MENGE_BESTELLT END) as WEIGHT, COUNT(*) OVER() AS GESAMTANZAHL, CASE WHEN CHARINDEX('Pri', VATEXT) > 0 THEN 1 ELSE 0 END AS Prio, dbo.AUFTRAGSKOPF.RFIRMA1, dbo.AUFTRAGSKOPF.LFIRMA1, dbo.AUFTRAGSKOPF.BO3_DELIVERYMEMO   
 		  FROM [LOE01].[dbo].[AUFTRAGSPOS] 
 		  LEFT JOIN dbo.AUFTRAGSKOPF ON dbo.AUFTRAGSKOPF.BELEGNR = dbo.AUFTRAGSPOS.BELEGNR
 		  LEFT JOIN dbo.VERSANDART ON dbo.VERSANDART.VANUMMER = dbo.AUFTRAGSKOPF.VANUMMER
 		  LEFT JOIN dbo.AUFTRAGSART ON dbo.AUFTRAGSART.NUMMER = dbo.AUFTRAGSKOPF.BELEGART
-		  WHERE [PACKLISTENNR] is not null and dbo.auftragspos.STATUS = 2 "
+		   "
 		  . $searchString .
-		  " GROUP BY [PACKLISTENNR], [VATEXT], [AUFTRAGSART] 
-		  ORDER BY [AENDATE] DESC";
+		  " GROUP BY [PACKLISTENNR], [VATEXT], [AUFTRAGSART], [RFIRMA1], [LFIRMA1], [BO3_DELIVERYMEMO]
+		  ORDER BY [Prio] DESC, [AENDATE] DESC";
 		
-		/*
-		echo "<br>";
-		echo $sql;
-		echo "<br>";
-		*/
+		// echo "<br>";
+		// echo $sql;
+		// echo "<br>";
+		
 		  
 		//SQL Config auslesesen und Verbindung zum Server herstellen
 		include 'sql.php';
@@ -74,15 +74,15 @@
 			?>
 			<div class="col">
               <div class="card shadow-sm">
-				<div class="card-header">
-					Packliste <?php echo $row['PACKLISTENNR']; ?><br>
-					Auftrag <?php echo $row['AUFTRAGSNR']; ?>
+				<div class="card-header <?php if(str_contains(strtolower($row['VATEXT']), "pri")){ echo "prime"; } ?> ">
+					<?php echo $row['PACKLISTENNR']; ?> | <?php echo $row['AUFTRAGSNR']; ?><br>
+					<?php if(isset($row['LFIRMA1'])){ echo $row['LFIRMA1']; } else { echo $row['RFIRMA1']; } ?>
 				</div>                
                 <div class="card-body">
 					<div class="row">
 						<div class="col-6">
 						  <p>Belegart:</p>
-						  <p>Versandart:</p>
+						  <p>Versand:</p>
 						</div>
 						<div class="col-6">
 						  <p><?php echo $row['AUFTRAGSART']; ?></p>
@@ -128,5 +128,10 @@
     </main>
 	
 <?php
-	echo '<br><center>Es sind noch ' . $totalNum-$count . ' weitere Packlisten zu bearbeiten (Insgesamt '  . $totalNum .')...</center>';
+	if(isset($_GET["s"])){
+		echo '<br><center>Es wurden insgesamt ' . $totalNum . ' Ergebnisse gefunden!</center><br>';
+	}
+	else if(isset($totalNum)){
+		echo '<br><center>Es sind insgesamt ' . $totalNum . ' Packlisten zu bearbeiten...</center><br>';
+	}
 ?>

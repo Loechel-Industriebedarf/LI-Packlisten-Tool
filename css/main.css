@@ -92,6 +92,10 @@
 	src: url('../fonts/consola.ttf') format('truetype');
 }
 
+h1{
+	font-size: calc(1.375rem + 1vw) !important;
+}
+
 h5 {
 	font-family: 'Code39AzaleaRegular3', sans-serif;
 	display: inline;
@@ -102,6 +106,20 @@ body {
       margin: 0;
       padding: 0;
 	  font-family: Consoloas !important;
+	  overflow-x: hidden;
+}
+
+p {
+  min-height: 1.5rem; /* Fix für leere p tags ohne Höhe */
+}
+
+img{
+	max-width: 100%;
+}
+
+a{
+	color: #ffffff !important;
+	text-decoration: none !important;
 }
 
 .fullsize {
@@ -111,12 +129,34 @@ body {
       text-align: center;
 }
 
-p {
-  min-height: 1.5rem; /* Fix für leere p tags ohne Höhe */
-}
-
 .btn-full-size{
 	width: 90% !important;
 	margin-left: 5%;
 	margin-bottom: 2.5%;
+}
+
+.img-logo{
+	height: 3rem;
+}
+
+.prime{
+	background-color: #ffc107 !important;
+	color: #000000 !important;
+}
+
+.nondhl{
+	background-color: #055160 !important;
+}
+
+.lead{
+	font-size: 1.1rem !important;
+}
+
+.ignore{
+	background-color: #41464b !important;
+	opacity: 50%;
+}
+
+.card{
+	background-color: rgb(52, 58, 64) !important;
 }

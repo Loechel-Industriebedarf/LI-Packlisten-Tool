@@ -33,27 +33,28 @@
       <div class="collapse text-bg-dark" id="navbarHeader">
         <div class="container">
           <div class="row">
+			  <div class="col-sm-4 offset-md-1 py-4">
+				  <h4>Menü</h4>
+				  <a href="pool.php"><button type="button" class="btn btn-lg btn-primary btn-full-size">Packlisten-Pool</button></a><br>
+				  <a href="history.php"><button type="button" class="btn btn-lg btn-primary btn-full-size">Historie (letzte 100)</button></a><br>
+				  <a href="settings.php"><button type="button" class="btn btn-lg btn-primary btn-full-size">Einstellungen</button></a><br>
+			</div>
             <div class="col-sm-8 col-md-7 py-4">
-              <h4>About</h4>
+              <h4>Infos & News</h4>
               <p class="text-body-secondary">
-                Hier könnte Ihre Werbung stehen.
+					Wird ein Auftrag über das Tool geöffnet, wird er für eine Stunde lang nicht mehr auf der Startseite angezeigt.<br>
+					Nutzt den Packlisten-Pool um mehrere Aufträge schnell hintereinander in eNVenta abzuschließen!
               </p>
             </div>
-            <div class="col-sm-4 offset-md-1 py-4">
-              <h4>Contact</h4>
-              <ul class="list-unstyled">
-                <li><a href="#" class="text-white">Hier könnte Ihr Link stehen</a></li>
-                <li><a href="#" class="text-white">Hier könnte Ihr Link stehen</a></li>
-                <li><a href="#" class="text-white">Hier könnte Ihr Link stehen</a></li>
-              </ul>
-            </div>
+            
           </div>
         </div>
       </div>
       <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container">
           <a href="index.php" class="navbar-brand d-flex align-items-center">
-            <strong>LI Packlisten Tool</strong>
+			<img src="img/logo.png" class="img-logo" />
+            <strong>Packlisten Tool</strong>
           </a>
           <button
             class="navbar-toggler"
@@ -69,3 +70,8 @@
         </div>
       </div>
     </header>
+	
+<?php
+	//Log every site visit
+	//error_log("", 0);
+?>
