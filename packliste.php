@@ -65,16 +65,16 @@
 										echo '<div class="alert alert-warning" role="alert">Der Auftrag wurde bereits (teil)fakturiert! Status ' . $row['STATUS'] . '.</div>'; 
 									}
 									
-									if(isset($row['MEMO'])){
-										echo '<div class="alert alert-info" role="alert">' . $row['MEMO'] . '</div>'; 
-									}
-									
 									if(isset($row['BO3_DELIVERYMEMO'])){
 										echo '<div class="alert alert-warning" role="alert">Dieser Auftrag wurde über das Tool aufgerufen!<br>' . $row['BO3_DELIVERYMEMO'] . '</div>'; 
 										$writeMemo = false;
 									}
 									else{
 										$writeMemo = true;
+									}
+									
+									if(isset($row['MEMO'])){
+										echo '<div class="alert alert-info" role="alert">' . $row['MEMO'] . '</div>'; 
 									}
 									
 									$auftragsart = $row['AUFTRAGSART'];
@@ -100,7 +100,7 @@
 							<input type="hidden" name="nr" value="<?php echo $_GET["nr"]; ?>">
 						 </form>
 						<br>
-						<div class="row row-cols-1 row-cols-lg-3 g-3">
+						<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2">
 				<?php
 			}
 			

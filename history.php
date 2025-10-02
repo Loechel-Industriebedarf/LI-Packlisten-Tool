@@ -41,6 +41,12 @@
 		
 	}
 	else{
-		echo "Es sind keine Packlisten vorhanden...<br>";
+		echo '<div class="alert alert-error" role="alert">Es sind keine Packlisten vorhanden...</div>';
 	}
 ?>
+
+<div class="row">
+	<div class="col-10 offset-1">
+		Die Historie zeigt die letzten 100 Packlisten an, die über das Tool aufgerufen wurden. Es werden auch Packlisten angezeigt, die NICHT abgeschlossen wurden!<br><br>
+	</div>
+</div>

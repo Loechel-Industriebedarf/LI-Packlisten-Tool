@@ -9,7 +9,8 @@
             <p class="lead text-body-secondary">
 			  ToDo: Maybe direkte DHL Anbindung? + Lieferschein Job<br>
 			  ToDo: Maybe presets bzw. Einstellungsmöglichkeiten<br>
-			  ToDo: Möglichkeit EANs in der Packliste zu scannen
+			  ToDo: Möglichkeit EANs in der Packliste zu scannen<br>
+			  ToDo: Nach Artikel/Lagerplatz kommissionieren?
             </p>
 			  <form class="form-inline" action="index.php" method="GET">
 				<div class="input-group">
@@ -43,8 +44,8 @@
 			$searchString = "WHERE [PACKLISTENNR] is not null and dbo.auftragspos.STATUS = 2 and (BO3_DELIVERYMEMO is null or AENDERUNGSDATUM < DATEADD(hour, -1, GETDATE())) ";
 		}
 ?>	  
-        <div class="container">
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="container-fluid">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-2">
 		  
 <?php
 		$count = 120;

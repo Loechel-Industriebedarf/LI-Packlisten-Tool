@@ -19,12 +19,16 @@
 		}
 		
 		if(isset($lists)){
+			$i = count($lists);
+			
 			foreach ($lists as $value) {
 				echo '<div class="fullsize">
 						<a href="packliste.php?nr=' . $value . '"><h5>*' . $value . '*</h5><br>
-						' . $value . 
+						' . $value . ' (' . $i . ')' . 
 					'</a></div>';
 				echo "<hr>";
+				
+				$i--;
 			}
 			
 		}
@@ -35,9 +39,9 @@
 ?>
 
 <div class="row">
-				<div class="col-10 offset-1">
-	Es können maximal 100 Packlisten im Pool gespeichert werden, danach wird die Älteste entfernt. Nach Feierabend werden die Einträge automatisch geleert. Über die Historie werden immer die letzten 100 Listen angezeigt!<br><br>
-</div>
+	<div class="col-10 offset-1">
+		Es können maximal 100 Packlisten im Pool gespeichert werden, danach wird die Älteste entfernt. Nach Feierabend werden die Einträge automatisch geleert. Über die Historie werden immer die letzten 100 Listen angezeigt!<br><br>
+	</div>
 </div>
 
 <a href="pool.php?empty=true"><button type="button" class="btn btn-lg btn-danger btn-full-size">Pool leeren</button></a><br>
